@@ -6,7 +6,7 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { logger } from 'src/config/logger';
+import { logger } from 'src/common/logger';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { RequestWithDevice } from 'src/types/request-with-device';
 

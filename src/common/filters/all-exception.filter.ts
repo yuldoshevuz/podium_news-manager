@@ -4,11 +4,10 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
-  Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ErrorResponse } from '../dtos/response.dto';
-import { logger } from 'src/config/logger';
+import { logger } from 'src/common/logger';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
