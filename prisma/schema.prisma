@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Device {
+  id          Int               @id @default(autoincrement())
+  app_version String
+  token       String            @unique
+  locate      String
+  timezone    Int
+  os          Int
+  shown_news  DeviceNewsShown[]
+  created_at  DateTime          @default(now())
+}
+
+model News {
+  id         Int               @id @default(autoincrement())
+  type       Int
+  content_id Int               @unique
+  content    NewsContent       @relation(fields: [content_id], references: [id], onDelete: Cascade)
+  active     Boolean           @default(true)
+  created_at DateTime          @default(now())
+  shown      DeviceNewsShown[]
+}
+
+model NewsContent {
+  id    Int      @id @default(autoincrement())
+  news  News?
+  title String?
+  body  String?
+  image String?
+  url   String[]
+}
+
+model DeviceNewsShown {
+  id        Int      @id @default(autoincrement())
+  device    Device   @relation(fields: [device_id], references: [id])
+  device_id Int
+  news      News     @relation(fields: [news_id], references: [id])
+  news_id   Int
+  shown_at  DateTime @default(now())
+}
