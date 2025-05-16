@@ -80,7 +80,6 @@ export class NewsService {
       where: {
         active: true,
         NOT: { shown: { some: { device: { token } } } },
-        created_at: { gte: device.created_at },
       },
       orderBy: { created_at: 'asc' },
       include: { content: true },
