@@ -1,10 +1,19 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { DeviceService } from './device.service';
 import { RegisterDeviceInputDto } from './dto/register-device-input.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
 import { PaginationPipe } from 'src/common/pagination/pagination.pipe';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { CheckDevice } from '../news/guards/check-device.guard';
 
 @ApiTags('Device')
 @Controller('device')
@@ -20,8 +29,16 @@ export class DeviceController {
     return this.deviceService.getDevices(params);
   }
 
+  @ApiHeader({
+    name: 'DeviceID',
+    description: 'Unique ID of the device',
+    required: true,
+  })
   @Post('register')
-  public async register(@Body() dto: RegisterDeviceInputDto) {
-    return this.deviceService.register(dto);
+  public async register(
+    @Body() dto: RegisterDeviceInputDto,
+    @Headers('DeviceID') deviceId?: string,
+  ) {
+    return this.deviceService.register(dto, deviceId);
   }
 }

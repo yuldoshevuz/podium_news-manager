@@ -71,15 +71,17 @@ export class NewsService {
     }
   }
 
-  async checkNews(token: string): Promise<CheckNewsOutputDto> {
-    const device = await this.prisma.device.findUnique({ where: { token } });
+  async checkNews(device_id: string): Promise<CheckNewsOutputDto> {
+    const device = await this.prisma.device.findUnique({
+      where: { device_id },
+    });
 
     if (!device) throw new BadRequestException('Device not found');
 
     const news = await this.prisma.news.findFirst({
       where: {
         active: true,
-        NOT: { shown: { some: { device: { token } } } },
+        NOT: { shown: { some: { device: { device_id } } } },
       },
       orderBy: { created_at: 'asc' },
       include: { content: true },

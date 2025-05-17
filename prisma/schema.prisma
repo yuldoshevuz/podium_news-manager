@@ -15,8 +15,9 @@ datasource db {
 
 model Device {
   id          Int               @id @default(autoincrement())
+  device_id   String            @unique
   app_version String
-  token       String            @unique
+  token       String
   locate      String
   timezone    Int
   os          Int

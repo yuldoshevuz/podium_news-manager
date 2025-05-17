@@ -30,9 +30,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
         if (Array.isArray(message)) message = message[message.length - 1];
       }
-    } else {
-      logger.error(exception);
     }
+
+    if (status === HttpStatus.INTERNAL_SERVER_ERROR) logger.error(exception);
 
     const res = new ErrorResponse(message);
 

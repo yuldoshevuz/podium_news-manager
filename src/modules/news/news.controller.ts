@@ -41,13 +41,13 @@ export class NewsController {
   }
 
   @ApiHeader({
-    name: 'Device-Id',
+    name: 'DeviceID',
     description: 'Unique ID of the device',
     required: true,
   })
   @UseGuards(CheckDevice)
   @Get('check-news')
-  checkNews(@Headers('Device-Id') deviceId: string) {
+  checkNews(@Headers('DeviceID') deviceId: string) {
     return this.newsService.checkNews(deviceId);
   }
 

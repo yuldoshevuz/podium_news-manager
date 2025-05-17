@@ -3,10 +3,8 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
-  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { logger } from 'src/common/logger';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { RequestWithDevice } from 'src/types/request-with-device';
 
@@ -18,12 +16,12 @@ export class CheckDevice implements CanActivate {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest<RequestWithDevice>();
 
-    const deviceId = request.headers['device-id'];
+    const deviceId = request.headers['deviceid'];
 
-    if (!deviceId) throw new UnauthorizedException('Please send Device-Id');
+    if (!deviceId) throw new UnauthorizedException('Please send DeviceID');
 
     const device = await this.prisma.device.findUnique({
-      where: { token: deviceId },
+      where: { device_id: deviceId },
     });
 
     if (!device) {
